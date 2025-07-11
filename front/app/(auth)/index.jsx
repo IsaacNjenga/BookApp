@@ -34,83 +34,83 @@ const LoginScreen = () => {
             style={styles.illustrationImage}
             contentFit="contain"
           />
-          <View style={styles.card}>
-            <View style={styles.formContainer}>
-              {/* email*/}
-              <View style={styles.inputGroup}>
-                <Text style={styles.label}>Email</Text>
-                <View style={styles.inputContainer}>
+        </View>
+        <View style={styles.card}>
+          <View style={styles.formContainer}>
+            {/* email*/}
+            <View style={styles.inputGroup}>
+              <Text style={styles.label}>Email</Text>
+              <View style={styles.inputContainer}>
+                <Ionicons
+                  name="mail-outline"
+                  size={20}
+                  color={COLORS.primary}
+                  style={styles.inputIcon}
+                />
+                <TextInput
+                  style={styles.input}
+                  placeholder="Enter your email"
+                  placeholderTextColor={COLORS.placeholderText}
+                  value={email}
+                  onChangeText={setEmail}
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                />
+              </View>
+            </View>
+
+            {/* password */}
+            <View>
+              <Text style={styles.label}>Password</Text>
+              <View style={styles.inputContainer}>
+                <Ionicons
+                  name="lock-closed-outline"
+                  size={20}
+                  color={COLORS.primary}
+                  style={styles.inputIcon}
+                />
+                <TextInput
+                  style={styles.input}
+                  placeholder="Enter your password"
+                  placeholderTextColor={COLORS.placeholderText}
+                  value={password}
+                  onChangeText={setPassword}
+                  secureTextEntry={!showPassword}
+                />
+
+                <TouchableOpacity
+                  onPress={() => setShowPassword(!showPassword)}
+                  style={styles.eyeIcon}
+                >
                   <Ionicons
-                    name="mail-outline"
+                    name={showPassword ? "eye-off-outline" : "eye-outline"}
                     size={20}
                     color={COLORS.primary}
-                    style={styles.inputIcon}
                   />
-                  <TextInput
-                    style={styles.input}
-                    placeholder="Enter your email"
-                    placeholderTextColor={COLORS.placeholderText}
-                    value={email}
-                    onChangeText={setEmail}
-                    keyboardType="email-address"
-                    autoCapitalize="none"
-                  />
-                </View>
+                </TouchableOpacity>
               </View>
+            </View>
 
-              {/* password */}
-              <View>
-                <Text style={styles.label}>Password</Text>
-                <View style={styles.inputContainer}>
-                  <Ionicons
-                    name="lock-closed-outline"
-                    size={20}
-                    color={COLORS.primary}
-                    style={styles.inputIcon}
-                  />
-                  <TextInput
-                    style={styles.input}
-                    placeholder="Enter your password"
-                    placeholderTextColor={COLORS.placeholderText}
-                    value={password}
-                    onChangeText={setPassword}
-                    secureTextEntry={!showPassword}
-                  />
+            <TouchableOpacity
+              style={styles.button}
+              onPress={handleLogin}
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <ActivityIndicator color="#fff" />
+              ) : (
+                <Text style={styles.buttonText}>Login </Text>
+              )}
+            </TouchableOpacity>
 
-                  <TouchableOpacity
-                    onPress={() => setShowPassword(!showPassword)}
-                    style={styles.eyeIcon}
-                  >
-                    <Ionicons
-                      name={showPassword ? "eye-off-outline" : "eye-outline"}
-                      size={20}
-                      color={COLORS.primary}
-                    />
-                  </TouchableOpacity>
-                </View>
-              </View>
-
-              <TouchableOpacity
-                style={styles.button}
-                onPress={handleLogin}
-                disabled={isLoading}
-              >
-                {isLoading ? (
-                  <ActivityIndicator color="#fff" />
-                ) : (
-                  <Text style={styles.buttonText}>Login </Text>
-                )}
-              </TouchableOpacity>
-
-              {/* footer */}
-              <View style={styles.footer}>
-                <Text style={styles.footerText}>Don't have an account?</Text>
-                <Link href="/signup" asChild>
-                  <TouchableOpacity>
-                    <Text style={styles.link}>Sign Up</Text>
-                  </TouchableOpacity>
-                </Link>
-              </View>
+            {/* footer */}
+            <View style={styles.footer}>
+              <Text style={styles.footerText}>Don't have an account?</Text>
+              <Link href="/signup" asChild>
+                <TouchableOpacity>
+                  <Text style={styles.link}>Sign Up</Text>
+                </TouchableOpacity>
+              </Link>
             </View>
           </View>
         </View>
