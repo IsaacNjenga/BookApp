@@ -8,20 +8,9 @@ dotenv.config();
 const router = express.Router();
 
 const generateToken = (userId) => {
-  jwt.sign(
-    { userId },
-    process.env.JWT_SECRET,
-    {
-      expiresIn: "1h",
-    },
-    (err, token) => {
-      if (err) {
-        console.error("Error generating token:", err);
-        throw new Error("Token generation failed");
-      }
-      return token;
-    }
-  );
+  return jwt.sign({ userId }, process.env.JWT_SECRET, {
+    expiresIn: "1h",
+  });
 };
 
 router.post("/register", async (req, res) => {

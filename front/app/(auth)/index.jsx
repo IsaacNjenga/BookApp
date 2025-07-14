@@ -6,6 +6,7 @@ import {
   ActivityIndicator,
   KeyboardAvoidingView,
   Platform,
+  Alert,
 } from "react-native";
 import React, { useState } from "react";
 import styles from "../../assets/styles/login.styles.js";
@@ -13,14 +14,23 @@ import { Image } from "expo-image";
 import COLORS from "@/constants/colors.js";
 import { Ionicons } from "@expo/vector-icons";
 import { Link } from "expo-router";
+import { useAuthStore } from "@/store/authStore.js";
 
 const LoginScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const { isLoading, login } = useAuthStore();
 
-  const handleLogin = async () => {};
+  const handleLogin = async () => {
+    const result = await login(email, password);
+
+    if (!result.success) {
+      Alert.alert("Error", result.message);
+    } else {
+      Alert.alert("Success");
+    }
+  };
 
   return (
     <KeyboardAvoidingView
