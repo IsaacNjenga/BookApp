@@ -1,4 +1,11 @@
-import { View, Text, TouchableOpacity, FlatList } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  FlatList,
+  ActivityIndicator,
+  RefreshControl,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import { useAuthStore } from "@/store/authStore";
 import styles from "@/assets/styles/home.styles";
@@ -7,6 +14,9 @@ import { Image } from "expo-image";
 import { Ionicons } from "@expo/vector-icons";
 import COLORS from "@/constants/colors";
 import { formatPublishDate } from "@/lib/utils.js";
+import Loader from "@/components/loader";
+
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const Home = () => {
   const { logout, token } = useAuthStore();
@@ -45,8 +55,10 @@ const Home = () => {
     } catch (error) {
       console.log("🚀 ~ fetchBooks ~ error:", error);
     } finally {
-      if (refresh) setRefreshing(false);
-      else setLoading(false);
+      if (refresh) {
+        //await sleep(800);
+        setRefreshing(false);
+      } else setLoading(false);
     }
   };
 
@@ -54,7 +66,12 @@ const Home = () => {
     fetchBooks();
   }, []);
 
-  const handleLoadMore = async () => {};
+  const handleLoadMore = async () => {
+    if (hasMore && !loading && !refreshing) {
+      //await sleep(1000);
+      await fetchBooks(page + 1);
+    }
+  };
 
   const renderItem = ({ item }) => (
     <View style={styles.bookCard}>
@@ -96,6 +113,8 @@ const Home = () => {
     return stars;
   };
 
+  if (loading) return <Loader size="large" />;
+
   return (
     <View style={styles.container}>
       <FlatList
@@ -104,6 +123,16 @@ const Home = () => {
         keyExtractor={(item) => item._id}
         contentContainerStyle={styles.listContainer}
         showVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={() => fetchBooks(1, true)}
+            colors={COLORS.primary}
+            tintColor={COLORS.primary}
+          />
+        }
+        onEndReached={handleLoadMore}
+        onEndReachedThreshold={0.1}
         ListHeaderComponent={
           <View style={styles.header}>
             <Text style={styles.headerTitle}>BookWorm 🐛</Text>
@@ -111,6 +140,15 @@ const Home = () => {
               Discover great reads from the community 👇
             </Text>
           </View>
+        }
+        ListFooterComponent={
+          hasMore && books.length > 0 ? (
+            <ActivityIndicator
+              style={styles.footerLoader}
+              size="small"
+              color={COLORS.primary}
+            />
+          ) : null
         }
         ListEmptyComponent={
           <View style={styles.emptyContainer}>
@@ -126,9 +164,6 @@ const Home = () => {
           </View>
         }
       />
-      <TouchableOpacity onPress={logout}>
-        <Text>Logout</Text>
-      </TouchableOpacity>
     </View>
   );
 };
