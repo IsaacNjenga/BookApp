@@ -7,7 +7,6 @@ import { formatMemberSince } from "@/lib/utils";
 
 const ProfileHeader = () => {
   const { user } = useAuthStore();
-  console.log("🚀 ~ ProfileHeader ~ user:", user);
 
   if(!user) return null
 
