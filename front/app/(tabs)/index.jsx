@@ -127,7 +127,7 @@ const Home = () => {
           <RefreshControl
             refreshing={refreshing}
             onRefresh={() => fetchBooks(1, true)}
-            colors={COLORS.primary}
+            colors={[COLORS.primary]}
             tintColor={COLORS.primary}
           />
         }
