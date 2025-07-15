@@ -19,6 +19,7 @@ import { Ionicons } from "@expo/vector-icons";
 import COLORS from "@/constants/colors";
 import { Image } from "expo-image";
 import { sleep } from ".";
+import Loader from "@/components/loader";
 
 const Profile = () => {
   const [books, setBooks] = useState([]);
@@ -157,6 +158,7 @@ const Profile = () => {
     return stars;
   };
 
+  if (isLoading && !refreshing) return <Loader size="small" />;
   return (
     <View style={styles.container}>
       <ProfileHeader />
